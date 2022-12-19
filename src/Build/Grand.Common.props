@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
+	<PropertyGroup>
+		<Product>grandnode</Product>
+		<PackageProjectUrl>https://grandnode.com/</PackageProjectUrl>   
+		<RepositoryUrl>https://github.com/grandnode/grandnode2</RepositoryUrl>
+		<PackageLicenseUrl>https://github.com/grandnode/grandnode2/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryType>Git</RepositoryType>
+	</PropertyGroup>
+	<ItemGroup>
+		<Using Include="System"/>
+		<Using Include="System.Collections.Generic"/>
+		<Using Include="System.IO"/>
+		<Using Include="System.Text"/>
+		<Using Include="System.Linq"/>
+		<Using Include="System.Threading"/>
+		<Using Include="System.Threading.Tasks"/>
+	</ItemGroup>
+</Project>

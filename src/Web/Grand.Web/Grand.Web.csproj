@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<Import Project="..\..\Build\Grand.Common.props" />
+	<PropertyGroup>
+		<!--The common language runtime (CLR) supports two types of garbage collection:
+		workstation garbage collection, which is available on all systems, and server garbage collection,
+		which is available on multiprocessor systems.      
+		For single-processor computers, the default workstation garbage collection should be the fastest option.
+		Either workstation or server can be used for two-processor computers.
+		Server garbage collection should be the fastest option for more than two processors.      
+		More details about GC you can see here: https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals-->
+		<ServerGarbageCollection>false</ServerGarbageCollection>
+		<!--In workstation or server garbage collection, you can enable concurrent garbage collection,
+		which enables threads to run concurrently with a dedicated thread that performs the garbage
+		collection for most of the duration of the collection.      
+		Concurrent garbage collection enables interactive applications to be more responsive by
+		minimizing pauses for a collection. Managed threads can continue to run most of the time while
+		the concurrent garbage collection thread is running. This results in shorter pauses while
+		a garbage collection is occurring.
+		To improve performance when several processes are running, disable concurrent garbage collection.
+		More details here: https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals#concurrent-garbage-collection-->
+		<ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+		
+		<PreserveCompilationReferences>true</PreserveCompilationReferences>
+		<DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+		<UserSecretsId>a2091e37-94a0-4446-8a5d-1d5c0835333a</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Business\Grand.Business.Core\Grand.Business.Core.csproj" />
+		<ProjectReference Include="..\..\Core\Grand.Domain\Grand.Domain.csproj" />
+		<ProjectReference Include="..\..\Core\Grand.Infrastructure\Grand.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Core\Grand.SharedKernel\Grand.SharedKernel.csproj" />
+		<ProjectReference Include="..\Grand.Web.Common\Grand.Web.Common.csproj" />
+		<ProjectReference Include="..\Grand.Web.Admin\Grand.Web.Admin.csproj" />
+
+		<ProjectReference Include="..\..\API\Grand.Api\Grand.Api.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\Business\Grand.Business.Authentication\Grand.Business.Authentication.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Catalog\Grand.Business.Catalog.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Checkout\Grand.Business.Checkout.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Cms\Grand.Business.Cms.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Common\Grand.Business.Common.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Customers\Grand.Business.Customers.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Marketing\Grand.Business.Marketing.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Messages\Grand.Business.Messages.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.Storage\Grand.Business.Storage.csproj" />
+		<ProjectReference Include="..\..\Business\Grand.Business.System\Grand.Business.System.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Content Include="App_Data\**" CopyToPublishDirectory="PreserveNewest" Exclude="App_Data\appsettings.json;App_Data\DataProtectionKeys\*.xml;" />
+		<Content Include="Themes\**" CopyToPublishDirectory="PreserveNewest" Exclude="Themes\**\*.cfg;Themes\**\*.cshtml" />
+		<Content Include="Roslyn\**" CopyToPublishDirectory="PreserveNewest" Exclude="Roslyn\**\*.dll" />
+		<Content Include="logs\**" CopyToPublishDirectory="PreserveNewest" />
+		<Content Remove="wwwroot\assets\images\thumbs\*.jpeg;wwwroot\assets\images\thumbs\*.jpg;wwwroot\assets\images\thumbs\*.png" />
+	</ItemGroup>
+	<Target Name="PublishViews" BeforeTargets="PrepareForPublish">
+		<ItemGroup>
+			<ThemeViews Include="Themes/**/*" />
+			<PluginFiles Include="Plugins/**/*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(ThemeViews)" DestinationFolder="$(PublishDir)/Themes/%(RecursiveDir)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PublishDir)/Plugins/%(RecursiveDir)" SkipUnchangedFiles="true" />
+	</Target>
+	<!--<PropertyGroup>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>-->
+	<ItemGroup>
+		<Content Remove="Plugins\**" />
+		<Compile Remove="Plugins\**" />
+		<EmbeddedResource Remove="Plugins\**" />
+		<None Remove="Plugins\**" />
+		<None Remove="App_Data\Resources\Upgrade\en_210.xml" />
+		<Content Update="Plugins\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>	
+</Project>
